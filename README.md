@@ -1,3 +1,7 @@
+获取nest指令菜单：nest g -h
+  - 快速创建功能模块(CRUD): nest g res myPractice --no-spec
+      myPractice是模块名称，--no-spec表示不生成测试文件
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
