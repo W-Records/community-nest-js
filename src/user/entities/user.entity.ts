@@ -13,4 +13,8 @@ export class User {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  // roles 字段允许为空
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  roles: string | null; // 类型改为 string | null
 }

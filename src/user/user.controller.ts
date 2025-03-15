@@ -1,12 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+
+  
+  @UseGuards(AuthGuard('jwt'), RolesGuard) // 需要 JWT 认证和角色验证
+  @Roles('user') // 普通用户可访问
+  @Get('profile')
+  getProfile() {
+    return { message: '普通用户接口' };
+  }
+
+  
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('admin') // 管理员接口
+  @Get('admin')
+  getAdminData() {
+    return { message: '管理员接口' };
+  }
+
+
+
+
+
 
 
   @Post('/save')
