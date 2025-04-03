@@ -4,6 +4,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { AuthService } from './auth.service';
 
+import { UnauthorizedException } from '@nestjs/common';
+
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
@@ -16,7 +18,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     const user = await this.authService.validateUser(username, password);
     if (!user) {
-      throw new Error('Invalid credentials');
+      // 自定义异常信息
+      throw new UnauthorizedException('用户不存在 或 密码错误');
+      // throw new Error('Invalid credentials阿斯顿发射点');
     }
     return user; // 返回的用户对象会被注入到 req.user
   }

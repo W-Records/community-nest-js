@@ -8,6 +8,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { RolesGuard } from './roles.guard';
 import { LocalStrategy } from './local.strategy';
 
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
+
 @Module({
   imports: [
     PassportModule, // 集成Passport
@@ -15,6 +18,8 @@ import { LocalStrategy } from './local.strategy';
       secret: 'your_jwt_secret', // 从环境变量读取密钥
       signOptions: { expiresIn: '60m' },
     }),
+    // 添加以下行：提供 UserRepository
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
   providers: [

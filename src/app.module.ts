@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { HouseModule } from './house/house.module';
 
 @Module({
   imports: [
@@ -22,12 +23,13 @@ import { AuthModule } from './auth/auth.module';
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // 开发环境可用，生产环境要关闭
+        synchronize: false, // 开发环境可用，生产环境要关闭
       }),
       inject: [ConfigService],
     }),
     UserModule,
     AuthModule,
+    HouseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

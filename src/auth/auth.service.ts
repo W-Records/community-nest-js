@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity'; // 假设你有一个User实体
@@ -10,7 +13,12 @@ import { User } from '../user/entities/user.entity'; // 假设你有一个User�
 export class AuthService {
 
 
-  constructor(private readonly jwtService: JwtService) {}
+  
+  constructor(
+    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    ) {}
 
   // 用户登录成功后生成Token
   async login(user: User) {
@@ -28,8 +36,19 @@ export class AuthService {
 
 
 
+  // 验证登录的用户名密码可正确
   async validateUser(username, password) {
-    return { id: username, roles: password };
+    const user = await this.userRepository.findOne({ where: { username } });
+
+    if (!user) {
+      return null; // 用户不存在
+    }
+    if (user.password !== password) {
+      return null; // 密码错误
+    }
+
+    return user;
+    // return { id: username, roles: password };
   }
 
 
