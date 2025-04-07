@@ -44,6 +44,9 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles('admin') // 管理员接口
   @Get()
   findAll() {
     return this.userService.findAll();
