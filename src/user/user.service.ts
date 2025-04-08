@@ -15,6 +15,19 @@ export class UserService {
   ) {}
 
 
+
+
+  // 修改用户得权限字段
+  async updateUserRoles(userId: number, roles: string[]) {
+    const user: any = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.roles = roles;
+    return await this.userRepository.save(user);
+  }
+
+
   // 创建用户
   // Partial<User> 允许传入的对象仅包含部分属性（例如只传 name 和 email，不强制传 id）
   async createUser(user: Partial<User>): Promise<User> {

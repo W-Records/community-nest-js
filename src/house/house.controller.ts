@@ -6,9 +6,20 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 
+
 @Controller('house')
 export class HouseController {
   constructor(private readonly houseService: HouseService) {}
+
+
+  // 为用户分配房屋
+  @Post('assignHouse') 
+  assignHouse(@Body() assignHouseDto: any) {
+    return this.houseService.assignHouse(assignHouseDto);
+  }
+
+
+
 
   @Post()
   create(@Body() createHouseDto: CreateHouseDto) {
