@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Request, Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,7 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
+  
   
   @UseGuards(AuthGuard('jwt'), RolesGuard) // 需要 JWT 认证和角色验证
   @Roles('user') // 普通用户可访问
@@ -30,6 +30,23 @@ export class UserController {
 
 
 
+
+  // 获取当前用户信息
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/getCurrentUserMsg')
+  async getCurrentUserMsg(@Request() req) {
+    console.log(`UserController内的输出---req.user:${JSON.stringify(req.user)}`);
+    return this.userService.getCurrentUser(req.user.id);
+  }
+
+
+
+
+  // 根据id修改用户信息
+  @Patch('/updateUserMsg')
+  async updateUserMsg(@Body() updateUser) {
+    return this.userService.updateUserMsg(updateUser);
+  }
 
 
 

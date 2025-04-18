@@ -15,6 +15,85 @@ export class UserService {
   ) {}
 
 
+  // 根据id修改用户信息
+  async updateUserMsg(updateUserDto) {
+    const user = await this.userRepository.findOne({ where: { id: updateUserDto.id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    // 更新用户信息
+    user.password = updateUserDto.password;
+    if (updateUserDto.phone != null) {
+      user.phone = updateUserDto.phone;
+    }
+    return await this.userRepository.save(user);
+  }
+
+
+
+  // 获取当前用户信息
+  async getCurrentUser(userId: number) { 
+    // const user = await this.userRepository.findOne({ where: { id: userId } });
+    // if (!user) {
+    //   throw new Error('User not found');
+    // }
+    // return user;
+
+    let res: any;
+    res = await this.userRepository.manager.query(`
+    SELECT
+    u.*,
+    GROUP_CONCAT(
+			DISTINCT CONCAT(
+                'ID:', h.id, 
+								'; name:', h.name, 
+								'; area:', h.area, 
+								'; type:', h.type, 
+								'; roomNumber:', h.roomNumber, 
+								'; atTime:', COALESCE(DATE_FORMAT(h.atTime, '%Y-%m-%d'), '无到期时间')
+            ) 
+			SEPARATOR '|'
+		) AS house_msg,
+    GROUP_CONCAT(
+			DISTINCT CONCAT(
+                'ID:', c.id, 
+								'; name:', c.name, 
+								'; type:', c.type, 
+								'; atTime:', COALESCE(DATE_FORMAT(c.atTime, '%Y-%m-%d'), '无到期时间')
+            ) 
+			SEPARATOR '|'
+		) AS carport_msg
+    FROM user u
+    LEFT JOIN house h ON u.id = h.userid  
+    LEFT JOIN carport c ON u.id = c.userid
+    WHERE u.id = ?
+    GROUP BY u.id;
+    `,
+    [userId]
+    )
+    console.log("用户多表查询，房屋信息和车位信息");
+    console.log(res); 
+
+    res = res.map(user => {
+      const houseKeys = ['ID', 'name', 'area', 'type', 'roomNumber', 'atTime'];
+      const carportKeys = ['ID', 'name', 'type', 'atTime'];
+
+      return {
+        ...user,
+        house_msgs: this.parseMessage(user.house_msg, houseKeys),
+        carport_msgs: this.parseMessage(user.carport_msg, carportKeys),
+      };
+    });
+
+    console.log("转后后的----用户多表查询，房屋信息和车位信息");
+    console.log(res); 
+
+    return res;
+
+
+  }
+
+
 
 
   // 修改用户得权限字段

@@ -8,6 +8,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { HouseModule } from './house/house.module';
+import { CarModule } from './car/car.module';
+import { BillModule } from './bill/bill.module';
+import { RepairModule } from './repair/repair.module';
+import { NoticeModule } from './notice/notice.module';
 
 @Module({
   imports: [
@@ -30,6 +34,10 @@ import { HouseModule } from './house/house.module';
     UserModule,
     AuthModule,
     HouseModule,
+    CarModule,
+    BillModule,
+    RepairModule,
+    NoticeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
