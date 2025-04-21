@@ -50,6 +50,13 @@ export class UserController {
 
 
 
+  // 根据id删除用户全部信息，注意还需要删除相关的表信息，比如房屋、车位、账单、报修
+  @Delete('/deleteUserMsg/:userId')
+  async deleteUserMsg(@Param('userId') userId) {
+    return this.userService.removeUser(userId);
+  }
+
+
 
   @Post('/save')
   async createUser(@Body() user: User) {

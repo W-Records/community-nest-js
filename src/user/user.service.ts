@@ -15,6 +15,31 @@ export class UserService {
   ) {}
 
 
+
+  // 删除用户全部信息，注意还需要删除相关的表信息，比如房屋、车位、账单、报修
+  async removeUser(userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    // 自定义SQL语句，更新house表的userid为null，atTime为null, type为'未选择'
+    await this.userRepository.query(`
+      UPDATE house SET userid = null, atTime = null, type = '未选择' WHERE userid = ?;
+    `, [userId]);
+    await this.userRepository.query(`
+      UPDATE carport SET userid = null, atTime = null, type = '普通车位' WHERE userid = ?;
+    `, [userId]);
+    // 自定义SQL语句,删除用户相关表，维修表和账单表信息
+    await this.userRepository.query(`
+      DELETE FROM repair WHERE userid = ?;
+    `, [userId]);
+    await this.userRepository.query(`
+      DELETE FROM bill WHERE userid = ?;
+    `, [userId]);
+    return await this.userRepository.remove(user);
+  }
+
+
   // 根据id修改用户信息
   async updateUserMsg(updateUserDto) {
     const user = await this.userRepository.findOne({ where: { id: updateUserDto.id } });
