@@ -15,6 +15,20 @@ export class NoticeService {
 
 
 
+  // 更新通知表的信息
+  async updateNotice(updateNoticeDto) {
+    const notice = await this.noticeRepository.findOne({ where: { id: updateNoticeDto.id } });
+    if (!notice) {
+      throw new Error('Notice not found');
+    }
+    // 更新通知信息
+    notice.title = updateNoticeDto.title;
+    notice.content = updateNoticeDto.content;
+    return await this.noticeRepository.save(notice);
+  }
+
+
+
   create(createNoticeDto: CreateNoticeDto) {
     return this.noticeRepository.save(createNoticeDto);
   }
@@ -24,7 +38,8 @@ export class NoticeService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} notice`;
+    // 根据id查询，指定通知信息
+    return this.noticeRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateNoticeDto: UpdateNoticeDto) {
@@ -32,6 +47,7 @@ export class NoticeService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} notice`;
+    // 删除
+    return this.noticeRepository.delete(id);
   }
 }

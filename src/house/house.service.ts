@@ -13,6 +13,42 @@ export class HouseService {
     private readonly houseRepository: Repository<House>,
   ) {}
 
+  // 根据id删除房屋
+  async removeHouse(id: number) {
+    const house = await this.houseRepository.findOne({ where: { id } });
+    if (!house) {
+      throw new Error('House not found');
+    }
+    return this.houseRepository.remove(house);
+  }
+
+
+  // 根据id获取指定房屋信息
+  async findHouseById(id: number) {
+    return this.houseRepository.findOne({ where: { id } });
+  }
+  // 根据id修改房屋信息
+  async updateHouse(updateHouseDto: UpdateHouseDto) {
+    const house = await this.houseRepository.findOne({ where: { id: updateHouseDto.id } });
+    if (!house) {
+      throw new Error('House not found');
+    }
+    return this.houseRepository.save({ ...house, ...updateHouseDto });
+  }
+
+
+  // 根据房屋id 移除房屋的用户信息
+  async removeUser(houseId: number) {
+    const house = await this.houseRepository.findOne({ where: { id: houseId } });
+    if (!house) {
+      throw new Error('House not found');
+    }
+    house.userid = null;
+    house.type = '用户未选择';
+    house.atTime = null;
+    return this.houseRepository.save(house);
+  }
+
   // 为用户分配房屋
   async assignHouse(assignHouseDto) {
     console.log(assignHouseDto);

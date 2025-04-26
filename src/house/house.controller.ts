@@ -11,6 +11,35 @@ import { Roles } from 'src/auth/roles.decorator';
 export class HouseController {
   constructor(private readonly houseService: HouseService) {}
 
+  // 根据id删除房屋
+  @Post('removeHouse/:id') 
+  removeHouse(@Param('id') id) {
+    return this.houseService.removeHouse(id);
+  }
+
+
+
+
+  // 根据id获取指定房屋信息
+  @Get('findHouseById/:id') 
+  findHouseById(@Param('id') id) {
+    return this.houseService.findHouseById(id);
+  }
+
+
+  // 根据id修改房屋信息
+  @Post('updateHouse') 
+  updateHouse(@Body() updateHouseDto: UpdateHouseDto) {
+    return this.houseService.updateHouse(updateHouseDto);
+  }
+
+  // 根据房屋id 移除房屋的用户信息
+  @Post('removeUser/:houseId') 
+  removeUser(@Param('houseId') houseId) {
+    return this.houseService.removeUser(houseId);
+  }
+
+
 
   // 为用户分配房屋
   @Post('assignHouse') 

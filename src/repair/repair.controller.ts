@@ -7,6 +7,15 @@ import { UpdateRepairDto } from './dto/update-repair.dto';
 export class RepairController {
   constructor(private readonly repairService: RepairService) {}
 
+
+
+  // 根据前端转递的id，修改status字段为已处理
+  @Post('updateStatus/:Id')
+  updateStatus(@Param('Id') Id) {
+    return this.repairService.updateStatus(Id);
+  }
+
+
   // 查询用户报修信息
   @Get('findUserRepairs/:userId')
   findUserRepairs(@Param('userId') userId) {

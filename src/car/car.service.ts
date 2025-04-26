@@ -13,8 +13,28 @@ export class CarService {
     private readonly carRepository: Repository<Car>,
   ) {}
 
+  // 根据前端传递的id，修改指定车位的name字段的值
+  async updateCarport(updateCarDto) {
+    const carport: any = await this.carRepository.findOne({ where: { id: updateCarDto.id } });
+    carport.name = updateCarDto.name;
+    return this.carRepository.save(carport);
+  }
 
 
+  // 根据传递的id删除车位信息
+  async removeCarport(id: number) {
+    return this.carRepository.delete(id);
+  }
+
+
+  // 根据传递得id，移除此车位的用户信息
+  async removeUserId(id: number) {
+    const carport: any = await this.carRepository.findOne({ where: { id: id } });
+    carport.userid = null;
+    carport.type = '普通车位';
+    carport.atTime = null;
+    return this.carRepository.save(carport);
+  }
 
   // 获取车位信息，类型type不能为消防车位，车位不能被持有就是userid不能有值
   async getCarInfo() {

@@ -55,7 +55,8 @@ export class BillService {
     return `This action updates a #${id} bill`;
   }
 
+  // 删除账单
   remove(id: number) {
-    return `This action removes a #${id} bill`;
+    return this.billRepository.delete(id);;
   }
 }

@@ -41,6 +41,7 @@ export class BillController {
     return this.billService.update(+id, updateBillDto);
   }
 
+  // 删除账单
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.billService.remove(+id);

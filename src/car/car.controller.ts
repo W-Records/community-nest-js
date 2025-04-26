@@ -8,6 +8,27 @@ export class CarController {
   constructor(private readonly carService: CarService) {}
 
 
+  // 根据前端传递的id，修改指定车位的name字段的值
+  @Post('updateCarport')
+  updateCarport(@Body() updateCarDto: UpdateCarDto) {
+    return this.carService.updateCarport(updateCarDto);
+  }
+
+
+  // 根据传递的id删除车位信息
+  @Post('removeCarport/:id')
+  removeCarport(@Param('id') id: string) {
+    return this.carService.removeCarport(+id);
+  }
+
+
+  // 根据传递得id，移除此车位的用户信息
+  @Post('removeUserId/:carid')
+  removeUserId(@Param('carid') carid) {
+    return this.carService.removeUserId(carid);
+  }
+
+
 
   // 获取车位信息，类型type不能为消防车位，车位不能被持有就是userid不能有值
   @Get('getCarInfo')
