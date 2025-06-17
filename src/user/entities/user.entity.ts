@@ -48,6 +48,17 @@ export class User {
   createdAt: Date;
 
 
+  // `carnumber` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '车牌号'
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
+  carnumber: string | null;
+
+
+
 
 
 

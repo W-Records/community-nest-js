@@ -12,6 +12,9 @@ import { CarModule } from './car/car.module';
 import { BillModule } from './bill/bill.module';
 import { RepairModule } from './repair/repair.module';
 import { NoticeModule } from './notice/notice.module';
+import { BuildingsModule } from './buildings/buildings.module';
+import { UnitsModule } from './units/units.module';
+import { BilltypeModule } from './billtype/billtype.module';
 
 @Module({
   imports: [
@@ -38,6 +41,9 @@ import { NoticeModule } from './notice/notice.module';
     BillModule,
     RepairModule,
     NoticeModule,
+    BuildingsModule,
+    UnitsModule,
+    BilltypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

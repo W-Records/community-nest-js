@@ -22,4 +22,10 @@ export class House {
   
     @Column({ type: 'int', nullable: true })
     userid: number | null; // 用户ID
+
+    @Column({ type: 'varchar', length: 255, nullable: true }) // 是否为电梯房（可空）
+    elevator: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true }) // 所属楼栋单元（可空）
+    address: string;
 }

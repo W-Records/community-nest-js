@@ -33,4 +33,7 @@ export class Car {
     nullable: true
   })
   userid: number | null;
+
+  @Column({ type: 'varchar', length: 255, comment: '地上地下', nullable: true })
+  updown: string;
 }

@@ -64,7 +64,14 @@ export class CarService {
 
   findAll() {
     // 查找数据库全部数据
-    return this.carRepository.find();
+    return this.carRepository.manager.query(`
+    SELECT c.*, u.username, u.phone, u.carnumber
+    FROM carport c
+    LEFT JOIN user u
+    ON c.userid = u.id
+    `);
+
+    // return this.carRepository.find();
   }
 
   findOne(id: number) {

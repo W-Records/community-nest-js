@@ -81,8 +81,12 @@ export class HouseService {
   }
 
   findAll() {
-    console.log(this.houseRepository.find());
-    return this.houseRepository.find();
+    return this.houseRepository.manager.query(`
+    SELECT h.*, u.username, u.phone
+    FROM house h
+    LEFT JOIN user u
+    ON h.userid = u.id
+    `)
   }
 
   findOne(id: number) {

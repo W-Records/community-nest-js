@@ -35,7 +35,20 @@ export class RepairService {
   }
 
   findAll() {
-    return this.repairRepository.find();
+    // 自定义SQL语句，SELECT r.*, u.phone, h.address, h.roomNumber
+    // FROM repair r
+    // LEFT JOIN user u
+    // ON r.userid = u.id
+    // JOIN house h
+    // ON h.userid = r.userid
+    return this.repairRepository.manager.query(`
+    SELECT r.*, u.phone, h.address, h.roomNumber
+    FROM repair r
+    LEFT JOIN user u
+    ON r.userid = u.id
+    JOIN house h
+    ON h.userid = r.userid
+    `);
   }
 
   findOne(id: number) {
